@@ -49,6 +49,7 @@ def linear_search( theSeq, value ):
             return i
     return -1
 
+
 def binary_search( theSeq, value ):
     low = 0
     high = len(theSeq) - 1

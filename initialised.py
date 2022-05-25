@@ -95,11 +95,13 @@ def choice():
         show_records()
         menu()
 
+    # what they mean by update record?
     elif ask == 5:
         print("Search record by Customer Name using Linear Search and update record" + "\n")
         linear_search()
         menu()
 
+    # what they mean by update record?
     elif ask == 6:
         print("Search record by Package Name using Binary Search and update record" + "\n")
         binary_search()
@@ -107,7 +109,25 @@ def choice():
 
     elif ask == 7:
         print("List records range from $X to $Y. e.g $100-200" + "\n")
+        wot_range = input("Enter the range (e.g 100-200): $")
+        filered_record = []
+
+        # implement error handling
+        for x in records:
+            if int(wot_range.split("-")[0]) <= x.get_package_cost_per_pax() <= int(wot_range.split("-")[1]):
+                filered_record.append(x)
+
+        insertion_sort(filered_record)
+
+        filtered_table = []
+        for x in filered_record:
+            table_data = [x.get_package_name(), x.get_customer_name(), x.get_number_of_pax(), x.get_package_cost_per_pax()]
+            filtered_table.append(table_data)
+
+        print(tabulate(filtered_table, headers=["Package Name", "Customer Name", "Number of Pax", "Package Cost Per Pax ($)"]) + "\n")
         menu()
+
+    # implement bonous feature => something that value add to the system
 
     elif ask == 8:
         print("Exit")
