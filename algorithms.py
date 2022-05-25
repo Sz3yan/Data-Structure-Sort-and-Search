@@ -30,12 +30,12 @@ def insertion_sort( theSeq ):
     # Starts with the first item as the only sorted entry. 
     for i in range(1, n): 
         # Save the value to be positioned 
-        value = theSeq[i].get_package_cost_per_pax()
+        value = theSeq[i]
  
         # Find the position where value fits in the 
         # ordered part of the list. 
         pos = i 
-        while pos > 0 and value < theSeq[pos - 1].get_package_cost_per_pax(): 
+        while pos > 0 and value.get_package_cost_per_pax() < theSeq[pos - 1].get_package_cost_per_pax(): 
             # Shift the items to the right during the search 
             theSeq[pos] = theSeq[pos-1] 
             pos -= 1 

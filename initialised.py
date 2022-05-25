@@ -92,6 +92,7 @@ def choice():
         print("Sort record by Package Cost using Insertion sort" + "\n")
         print("sorting...")
         insertion_sort(records)
+        show_records()
         menu()
 
     elif ask == 5:
