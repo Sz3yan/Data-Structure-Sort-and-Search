@@ -43,12 +43,12 @@ def insertion_sort( theSeq ):
         # Put the saved value into the open slot. 
         theSeq[pos] = value 
 
-def linear_search( theSeq, value ):
+def linear_search( theSeq, value, new_name ):
     for i in range(len(theSeq)):
-        if theSeq[i] == value:
-            return i
-    return -1
+        if theSeq[i].get_customer_name() == value:
+            theSeq[i].set_customer_name(new_name)
 
+            print(theSeq[i])
 
 def binary_search( theSeq, value ):
     low = 0

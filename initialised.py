@@ -4,6 +4,12 @@
 # from the system. User can perform searching and sorting of records. You would need to apply 
 # knowledge from the practical sessions to complete this assignment. 
 
+# bonus feature
+# |-- room management
+# |-- customer can book
+# |-- give rewards to customers based on their bookings
+# |-- customer can cancel their booking
+
 import random, names, time
 from tabulate import tabulate
 from algorithms import bubble_sort, selection_sort, insertion_sort, linear_search, binary_search
@@ -20,6 +26,9 @@ class Booking:
 
     def get_customer_name(self):
         return self.__customer_name
+
+    def set_customer_name(self, new_name):
+        self.__customer_name = new_name
 
     def get_number_of_pax(self):
         return self.__number_of_pax
@@ -50,22 +59,28 @@ def show_records():
 def menu():
     global ask
     
-    menu = []
+    menu_list = []
+
+    menu_list.append(["1. Display all records"])
+    menu_list.append(["2. Sort record by Customer Name using Bubble sort"])
+    menu_list.append(["3. Sort record by Package Name using Selection sort"])
+    menu_list.append(["4. Sort record by Package Cost using Insertion sort"])
+    menu_list.append(["5. Search record by Customer Name using Linear Search and update record"])
+    menu_list.append(["6. Search record by Package Name using Binary Search and update record"])
+    menu_list.append(["7. List records range from $X to $Y. e.g $100-200"])
+    menu_list.append(["8. Exit"])
+
+    # for easier management
+    for_choice = [int(menu_list[i][0].split(".")[0]) for i in range(len(menu_list))]
+
     time.sleep(1) # to make the output a little more readable
+    print(tabulate(menu_list, headers=["Menu", "Description"]) + "\n")
 
-    menu.append(["1. Display all records"])
-    menu.append(["2. Sort record by Customer Name using Bubble sort"])
-    menu.append(["3. Sort record by Package Name using Selection sort"])
-    menu.append(["4. Sort record by Package Cost using Insertion sort"])
-    menu.append(["5. Search record by Customer Name using Linear Search and update record"])
-    menu.append(["6. Search record by Package Name using Binary Search and update record"])
-    menu.append(["7. List records range from $X to $Y. e.g $100-200"])
-    menu.append(["8. Exit"])
-
-    print(tabulate(menu, headers=["Menu", "Description"]) + "\n")
-
-    # implement error handling
     ask = int(input("Enter your choice: "))
+    if ask not in for_choice:
+        print("Invalid choice. Please try again")
+        menu()
+
     choice()
 
 def choice():
@@ -95,13 +110,13 @@ def choice():
         show_records()
         menu()
 
-    # what they mean by update record?
     elif ask == 5:
         print("Search record by Customer Name using Linear Search and update record" + "\n")
-        linear_search()
+        search_name = input("Enter customer name: ")
+        new_name = input("Enter new customer name: ")
+        linear_search(records, search_name, new_name)
         menu()
 
-    # what they mean by update record?
     elif ask == 6:
         print("Search record by Package Name using Binary Search and update record" + "\n")
         binary_search()
