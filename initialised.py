@@ -24,6 +24,9 @@ class Booking:
     def get_package_name(self):
         return self.__package_name
 
+    def set_package_name(self, new_name):
+        self.__package_name = new_name
+
     def get_customer_name(self):
         return self.__customer_name
 
@@ -76,14 +79,20 @@ def menu():
     time.sleep(1) # to make the output a little more readable
     print(tabulate(menu_list, headers=["Menu", "Description"]) + "\n")
 
-    ask = int(input("Enter your choice: "))
-    if ask not in for_choice:
+    try:
+        ask = int(input("Enter your choice: "))
+        if ask not in for_choice:
+            print("Invalid choice. Please try again")
+            menu()
+
+        choice()
+    except ValueError:
         print("Invalid choice. Please try again")
         menu()
 
-    choice()
-
 def choice():
+    global ask
+
     if ask == 1:
         print("Display all records" + "\n")
         show_records()
@@ -115,34 +124,59 @@ def choice():
         search_name = input("Enter customer name: ")
         new_name = input("Enter new customer name: ")
         linear_search(records, search_name, new_name)
+        show_records()
         menu()
 
+    # still got a bit of problem here. need to fix it
     elif ask == 6:
         print("Search record by Package Name using Binary Search and update record" + "\n")
-        binary_search()
+        search_Packagename = input("Enter Package name: ")
+        new_Packagename = input("Enter new Package name: ")
+        binary_search(records, search_Packagename, new_Packagename)
+        show_records()
         menu()
 
     elif ask == 7:
         print("List records range from $X to $Y. e.g $100-200" + "\n")
-        wot_range = input("Enter the range (e.g 100-200): $")
-        filered_record = []
+        try:
+            wot_range = input("Enter the range (e.g 100-200): $")
 
-        # implement error handling
-        for x in records:
-            if int(wot_range.split("-")[0]) <= x.get_package_cost_per_pax() <= int(wot_range.split("-")[1]):
-                filered_record.append(x)
+            if "-" not in wot_range:
+                print("Invalid input. Please try again")
+                choice()
 
-        insertion_sort(filered_record)
+            lower_limit = int(wot_range.split("-")[0])
+            upper_limit = int(wot_range.split("-")[1])
 
-        filtered_table = []
-        for x in filered_record:
-            table_data = [x.get_package_name(), x.get_customer_name(), x.get_number_of_pax(), x.get_package_cost_per_pax()]
-            filtered_table.append(table_data)
+            # if user enters opposite, system will still be able to display the range accordinly
+            if lower_limit > upper_limit:
+                upper_limit, lower_limit = lower_limit, upper_limit
 
-        print(tabulate(filtered_table, headers=["Package Name", "Customer Name", "Number of Pax", "Package Cost Per Pax ($)"]) + "\n")
-        menu()
+            filered_record = []
+
+            # implement error handling
+            for x in records:
+                # do swap if the input is not in the format of $100-200
+                if lower_limit <= x.get_package_cost_per_pax() <= upper_limit:
+                    filered_record.append(x)
+
+            insertion_sort(filered_record)
+
+            # Display the filtered records
+            filtered_table = []
+            for x in filered_record:
+                table_data = [x.get_package_name(), x.get_customer_name(), x.get_number_of_pax(), x.get_package_cost_per_pax()]
+                filtered_table.append(table_data)
+
+            print(tabulate(filtered_table, headers=["Package Name", "Customer Name", "Number of Pax", "Package Cost Per Pax ($)"]) + "\n")
+            menu()
+
+        except ValueError:
+            print("Invalid input. Please try again")
+            choice()
 
     # implement bonous feature => something that value add to the system
 
     elif ask == 8:
         print("Exit")
+        exit()

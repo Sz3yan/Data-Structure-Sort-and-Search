@@ -50,15 +50,30 @@ def linear_search( theSeq, value, new_name ):
 
             print(theSeq[i])
 
-def binary_search( theSeq, value ):
+def binary_search( theValues, target, new_name ):
+    # Start with the entire sequence of elements
     low = 0
-    high = len(theSeq) - 1
+    high = len(theValues) - 1
+
+    # Repeatedly subdivide the sequence in half
+    # until the target is found
     while low <= high:
-        mid = (low + high) // 2
-        if theSeq[mid] == value:
-            return mid
-        elif theSeq[mid] < value:
-            low = mid + 1
-        else:
+        # Find the midpoint of the sequence
+        mid = int(high + low) // 2
+
+        # Does the midpoint contain the target?
+        # If yes, return midpoint (i.e. index of the list)
+        if target == theValues[mid].get_package_name():
+            theValues[mid].set_package_name(new_name)
+
+        # Or is the target before the midpoint?
+        elif target < theValues[mid].get_package_name():
             high = mid - 1
-    return -1
+
+        # Or is the target after the midpoint?
+        else:
+            low = mid + 1
+
+    # If the sequence cannot be subdivided further,
+    # target is not in the list of values
+    return theValues[mid]
