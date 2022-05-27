@@ -6,9 +6,7 @@
 
 # bonus feature
 # |-- room management
-# |-- customer can book
 # |-- give rewards to customers based on their bookings
-# |-- customer can cancel their booking
 
 import random, names, time
 from tabulate import tabulate
@@ -38,9 +36,12 @@ class Booking:
 
     def get_package_cost_per_pax(self):
         return self.__package_cost_per_pax
+
+    def total(self):
+        return self.get_number_of_pax() * self.get_package_cost_per_pax()
     
     def __str__(self):
-        return f"{self.get_package_name()} | {self.get_customer_name()} | {self.get_number_of_pax()} | {self.get_package_cost_per_pax()}"
+        return f"{self.get_package_name()} | {self.get_customer_name()} | {self.get_number_of_pax()} | {self.get_package_cost_per_pax()} | {self.total()}"
 
 def generate():
     global records
@@ -54,10 +55,15 @@ def generate():
 def show_records():
     table = []
     for x in records:
-        table_data = [x.get_package_name(), x.get_customer_name(), x.get_number_of_pax(), x.get_package_cost_per_pax()]
+        table_data = [x.get_package_name(), x.get_customer_name(), x.get_number_of_pax(), x.get_package_cost_per_pax(), x.total()]
         table.append(table_data)
 
-    print(tabulate(table, headers=["Package Name", "Customer Name", "Number of Pax", "Package Cost Per Pax ($)"]) + "\n")
+    print(tabulate(table, headers=["Package Name", "Customer Name", "Number of Pax", "Package Cost Per Pax ($)", "Total ($)"]) + "\n")
+
+    grand_total = 0
+    for i in range(len(records)):
+        grand_total += records[i].total()
+    print(f"Grand total: ${grand_total}", "\n")
 
 def menu():
     global ask
@@ -71,13 +77,15 @@ def menu():
     menu_list.append(["5. Search record by Customer Name using Linear Search and update record"])
     menu_list.append(["6. Search record by Package Name using Binary Search and update record"])
     menu_list.append(["7. List records range from $X to $Y. e.g $100-200"])
-    menu_list.append(["8. Exit"])
+    menu_list.append(["8. Add/Remove booking"])
+    menu_list.append(["9. See Loyal Customers"])
+    menu_list.append(["10. Exit"])
 
     # for easier management
     for_choice = [int(menu_list[i][0].split(".")[0]) for i in range(len(menu_list))]
 
     time.sleep(1) # to make the output a little more readable
-    print(tabulate(menu_list, headers=["Menu", "Description"]) + "\n")
+    print(tabulate(menu_list, headers=["Menu"]) + "\n")
 
     try:
         ask = int(input("Enter your choice: "))
@@ -132,9 +140,10 @@ def choice():
         show_records()
         menu()
 
-    # still got a bit of problem here. need to fix it
     elif ask == 6:
         print("Search record by Package Name using Binary Search and update record" + "\n")
+        
+        selection_sort(records)
         search_Packagename = input("Enter Package name: ")
 
         if search_Packagename not in [i.get_package_name() for i in records]:
@@ -183,8 +192,36 @@ def choice():
             print("Invalid input. Please try again")
             choice()
 
-    # implement bonous feature => something that value add to the system
-
+    # can add and remove. but remove: need to sort first and fix. 
     elif ask == 8:
+        print("Add/Remove booking" + "\n")
+
+        add_or_remove = input("Enter 'a' to add a new booking or 'r' to remove a booking: ").upper()
+        new_name = input("Enter your name: ")
+
+        if add_or_remove == "A":
+            records.append(Booking(f"The {names.get_last_name()} Adventure", new_name, random.randint(1,5), random.randint(500,1500)))
+            print("Booking added")
+            show_records()
+            menu()
+
+        elif add_or_remove == "R":
+            if new_name in [i.get_customer_name() for i in records]:
+                for i in records:
+                    if new_name == i.get_customer_name():
+                        records.remove(i)
+                print("Booking removed")
+                show_records()
+                menu()
+            
+            else:
+                print("Customer not found, please try again")
+                choice()
+        
+    elif ask == 9:
+        print("See Best" + "\n")
+
+
+    elif ask == 10:
         print("Exit")
         exit()
