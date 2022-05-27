@@ -81,7 +81,8 @@ def menu():
     menu_list.append(["7. List records range from $X to $Y. e.g $100-200"])
     menu_list.append(["8. Add/Remove booking"])
     menu_list.append(["9. See Loyal Customers"])
-    menu_list.append(["10. Exit"])
+    menu_list.append(["10. Search total using AVL Tree"])
+    menu_list.append(["11. Exit"])
 
     # for easier management
     for_choice = [int(menu_list[i][0].split(".")[0]) for i in range(len(menu_list))]
@@ -254,7 +255,6 @@ def choice():
             
         print(f"Total Price gap between best and worst customers: ${best_total - worst_total}" + "\n")
 
-        print("Predictions")
         def estimate_coef(x, y):
             # number of observations/points
             n = np.size(x)
@@ -275,8 +275,7 @@ def choice():
         
         def plot_regression_line(x, y, b):
             # plotting the actual points as scatter plot
-            plt.scatter(x, y, color = "m",
-                    marker = "o", s = 30)
+            plt.scatter(x, y, color = "m", marker = "o", s = 30)
         
             # predicted response vector
             y_pred = b[0] + b[1]*x
@@ -304,11 +303,135 @@ def choice():
 
         main()
 
-        
-
         time.sleep(2)
         menu()
 
     elif ask == 10:
+        class TreeNode(object): 
+            def __init__(self,_val): 
+                self.val = _val 
+                self.left = None
+                self.right = None
+                self.height = 1
+                
+        class AVL_Tree(object): 
+            #steps:
+            # 1)perform simple BST insertion
+            # 2)modify the height 
+            # 3)Get the Balancing Factor
+            # 4)Balance The tree using required set of rotation to get balanced binary search tree,ie. AVL
+            def insert(self, root, val): 
+                    
+                #Simple Bst Insertion:
+                if not root: 
+                    return TreeNode(val) 
+                elif val < root.val: 
+                    root.left = self.insert(root.left, val) 
+                else: 
+                    root.right = self.insert(root.right, val)
+            
+                # 2)modify the height      
+                root.height = 1 + max(self.Height(root.left), self.Height(root.right)) 
+                # 3)Get the Balancing Factor
+                balance = self.check_Avl(root) 
+                # 4)Balance The tree using required set of rotation
+                
+                #RR Rotation as tree is Left Skewed
+                if balance > 1 and val < root.left.val: 
+                    return self.RR(root) 
+
+                #LL Rotation as tree is Right Skewed
+                if balance < -1 and val > root.right.val: 
+                    return self.LL(root) 
+                #RL Rotation as tree is Left then Right Skewed
+                if balance > 1 and val > root.left.val: 
+                    root.left = self.LL(root.left) 
+                    return self.RR(root) 
+                #LR Rotation as tree is Right then Left Skewed
+                if balance < -1 and val < root.right.val: 
+                    root.right = self.RR(root.right) 
+                    return self.LL(root) 
+        
+                return root 
+            #LL Rotation
+            def LL(self, node): 
+            
+                p = node.right 
+                t = p.left
+                #Rotations:
+                p.left = node 
+                node.right = t 
+                #modify the heights: 
+                node.height = 1 + max(self.Height(node.left), self.Height(node.right)) 
+                p.height = 1 + max(self.Height(p.left), self.Height(p.right)) 
+        
+                return p 
+            #LL Rotation
+            def RR(self, node): 
+        
+                p = node.left 
+                t = p.right
+                #Rotations:
+                p.right = node
+                node.left = t 
+                #modify the heights:
+                node.height = 1 + max(self.Height(node.left), self.Height(node.right)) 
+                p.height = 1 + max(self.Height(p.left), self.Height(p.right)) 
+                return p 
+            #Getting the Height
+            def Height(self, root): 
+                if not root: 
+                    return 0
+        
+                return root.height 
+            #Getting the Balancing Factor
+            def check_Avl(self, root): 
+                if not root: 
+                    return 0
+        
+                return self.Height(root.left) - self.Height(root.right) 
+        
+            def preOrder(self, root): 
+        
+                if not root: 
+                    return
+        
+                print("{0} ".format(root.val), end="") 
+                self.preOrder(root.left) 
+                self.preOrder(root.right) 
+
+
+        def insert_data(_data):
+                mytree = AVL_Tree()
+                root = None
+                for i in _data:
+                    root = mytree.insert(root,i)
+                print("Preorder Traversal of constructed AVL tree is:")
+                mytree.preOrder(root)
+                print()
+                return root
+        def Search(root,val):
+            if (root is None):
+                return False
+            elif (root.val == val):
+                return True
+            elif(root.val < val):
+                return Search(root.right,val)
+            return Search(root.left,val)
+            return False
+
+        def hoho():
+            root = insert_data([i.total() for i in records])
+            t = int(input('Enter the key to be searched:\t'))
+            if(Search(root,t)):
+                print()
+                print('"Element found in AVL Tree"')
+            else:
+                print()
+                print('"Element not found in AVL Tree"')
+        
+        hoho()
+
+    elif ask == 11:
         print("Exit")
         exit()
