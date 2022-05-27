@@ -5,10 +5,12 @@
 # knowledge from the practical sessions to complete this assignment. 
 
 # bonus feature
-# |-- room management
-# |-- give rewards to customers based on their bookings
+# |-- earning predictions
 
 import random, names, time
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
 from tabulate import tabulate
 from algorithms import bubble_sort, selection_sort, insertion_sort, linear_search, binary_search
 
@@ -58,7 +60,7 @@ def show_records():
         table_data = [x.get_package_name(), x.get_customer_name(), x.get_number_of_pax(), x.get_package_cost_per_pax(), x.total()]
         table.append(table_data)
 
-    print(tabulate(table, headers=["Package Name", "Customer Name", "Number of Pax", "Package Cost Per Pax ($)", "Total ($)"]) + "\n")
+    print(tabulate(table, headers=["Package Name", "Customer Name", "Number of Pax", "Package Cost Per Pax ($)"]) + "\n")
 
     grand_total = 0
     for i in range(len(records)):
@@ -182,7 +184,7 @@ def choice():
 
             filtered_table = []
             for x in filered_record:
-                table_data = [x.get_package_name(), x.get_customer_name(), x.get_number_of_pax(), x.get_package_cost_per_pax()]
+                table_data = [x.get_package_name(), x.get_customer_name(), x.get_number_of_pax(), x.get_package_cost_per_pax(), x.total()]
                 filtered_table.append(table_data)
 
             print(tabulate(filtered_table, headers=["Package Name", "Customer Name", "Number of Pax", "Package Cost Per Pax ($)"]) + "\n")
@@ -219,8 +221,93 @@ def choice():
                 choice()
         
     elif ask == 9:
-        print("See Best" + "\n")
+        print("Where the money fly in and predictions" + "\n")
 
+        insertion_sort(records)
+        worst = records[:3]
+        best = records[-3:]
+
+        filtered_table = []
+        for x in best:
+            table_data = [x.get_package_name(), x.get_customer_name(), x.get_number_of_pax(), x.get_package_cost_per_pax(), x.total()]
+            filtered_table.append(table_data)
+
+        print("Best 3 customers")
+        print(tabulate(filtered_table, headers=["Package Name", "Customer Name", "Number of Pax", "Package Cost Per Pax ($)", "Total ($)"]) + "\n")
+
+        filtered_table = []
+        for x in worst:
+            table_data = [x.get_package_name(), x.get_customer_name(), x.get_number_of_pax(), x.get_package_cost_per_pax(), x.total()]
+            filtered_table.append(table_data)
+
+        print("Worst 3 customers")
+        print(tabulate(filtered_table, headers=["Package Name", "Customer Name", "Number of Pax", "Package Cost Per Pax ($)", "Total ($)"]) + "\n")
+
+        best_total = 0
+        worst_total = 0
+
+        for i in best:
+            best_total += i.total()
+
+        for i in worst:
+            worst_total += i.total()
+            
+        print(f"Total Price gap between best and worst customers: ${best_total - worst_total}" + "\n")
+
+        print("Predictions")
+        def estimate_coef(x, y):
+            # number of observations/points
+            n = np.size(x)
+        
+            # mean of x and y vector
+            m_x = np.mean(x)
+            m_y = np.mean(y)
+        
+            # calculating cross-deviation and deviation about x
+            SS_xy = np.sum(y*x) - n*m_y*m_x
+            SS_xx = np.sum(x*x) - n*m_x*m_x
+        
+            # calculating regression coefficients
+            b_1 = SS_xy / SS_xx
+            b_0 = m_y - b_1*m_x
+        
+            return (b_0, b_1)
+        
+        def plot_regression_line(x, y, b):
+            # plotting the actual points as scatter plot
+            plt.scatter(x, y, color = "m",
+                    marker = "o", s = 30)
+        
+            # predicted response vector
+            y_pred = b[0] + b[1]*x
+        
+            # plotting the regression line
+            plt.plot(x, y_pred, color = "g")
+        
+            # putting labels
+            plt.xlabel('Transaction')
+            plt.ylabel('Total ($)')
+        
+            # function to show plot
+            plt.show()
+        
+        def main():
+            # observations / data
+            x = np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+            y = np.array([i.total() for i in records])
+        
+            # estimating coefficients
+            b = estimate_coef(x, y)
+        
+            # plotting regression line
+            plot_regression_line(x, y, b)
+
+        main()
+
+        
+
+        time.sleep(2)
+        menu()
 
     elif ask == 10:
         print("Exit")
