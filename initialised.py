@@ -122,6 +122,11 @@ def choice():
     elif ask == 5:
         print("Search record by Customer Name using Linear Search and update record" + "\n")
         search_name = input("Enter customer name: ")
+
+        if search_name not in [i.get_customer_name() for i in records]:
+            print("Customer not found, please try again")
+            choice()
+
         new_name = input("Enter new customer name: ")
         linear_search(records, search_name, new_name)
         show_records()
@@ -131,6 +136,11 @@ def choice():
     elif ask == 6:
         print("Search record by Package Name using Binary Search and update record" + "\n")
         search_Packagename = input("Enter Package name: ")
+
+        if search_Packagename not in [i.get_package_name() for i in records]:
+            print("Package not found, please try again")
+            choice()
+
         new_Packagename = input("Enter new Package name: ")
         binary_search(records, search_Packagename, new_Packagename)
         show_records()
@@ -154,7 +164,6 @@ def choice():
 
             filered_record = []
 
-            # implement error handling
             for x in records:
                 # do swap if the input is not in the format of $100-200
                 if lower_limit <= x.get_package_cost_per_pax() <= upper_limit:
@@ -162,7 +171,6 @@ def choice():
 
             insertion_sort(filered_record)
 
-            # Display the filtered records
             filtered_table = []
             for x in filered_record:
                 table_data = [x.get_package_name(), x.get_customer_name(), x.get_number_of_pax(), x.get_package_cost_per_pax()]
