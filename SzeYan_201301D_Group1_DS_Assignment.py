@@ -75,10 +75,9 @@ def menu():
     menu_list.append(["4. Sort record by Package Cost using Insertion sort"])
     menu_list.append(["5. Search record by Customer Name using Linear Search and update record"])
     menu_list.append(["6. Search record by Package Name using Binary Search and update record"])
-    menu_list.append(["7. List records range from $X to $Y. e.g $100-200"])
-    menu_list.append(["8. Add/Remove booking"])
-    menu_list.append(["9. Search record by total amount using AVL Tree"])
-    menu_list.append(["10. Exit"])
+    menu_list.append(["7. Search record by Customer Name using AVL Tree"])
+    menu_list.append(["8. List records range from $X to $Y. e.g $100-200"])
+    menu_list.append(["9. Exit"])
 
     # for easier management
     for_choice = [int(menu_list[i][0].split(".")[0]) for i in range(len(menu_list))]
@@ -155,6 +154,33 @@ def choice():
         menu()
 
     elif ask == 7:
+        root = insert_data([i.get_customer_name() for i in records])
+        search_name = input('Enter customer name: ')
+
+        if search_name not in [i.get_customer_name() for i in records]:
+            print("Customer not found, please try again")
+            choice()
+
+        if Search(root, search_name):
+            print('"Customer found"')
+            filered_record = []
+
+            insertion_sort(filered_record)
+
+            for x in records:
+                if search_name == x.get_customer_name():
+                    filered_record.append(x)
+
+            filtered_table = []
+            for x in filered_record:
+                table_data = [x.get_package_name(), x.get_customer_name(), x.get_number_of_pax(), x.get_package_cost_per_pax(), x.total()]
+                filtered_table.append(table_data)
+
+            print(tabulate(filtered_table, headers=["Package Name", "Customer Name", "Number of Pax", "Package Cost Per Pax ($)", "Total ($)"]) + "\n")
+
+            menu()
+
+    elif ask == 8:
         print("List records range from $X to $Y. e.g $100-200" + "\n")
         try:
             wot_range = input("Enter the range (e.g 100-200): $")
@@ -166,14 +192,12 @@ def choice():
             lower_limit = int(wot_range.split("-")[0])
             upper_limit = int(wot_range.split("-")[1])
 
-            # if user enters opposite, system will still be able to display the range accordinly
             if lower_limit > upper_limit:
                 upper_limit, lower_limit = lower_limit, upper_limit
 
             filered_record = []
 
             for x in records:
-                # do swap if the input is not in the format of $100-200
                 if lower_limit <= x.get_package_cost_per_pax() <= upper_limit:
                     filered_record.append(x)
 
@@ -190,50 +214,13 @@ def choice():
         except ValueError:
             print("Invalid input. Please try again")
             choice()
-
-    # can add and remove. but remove: need to sort first and fix. 
-    elif ask == 8:
-        print("Add/Remove booking" + "\n")
-
-        add_or_remove = input("Enter 'a' to add a new booking or 'r' to remove a booking: ").upper()
-        new_name = input("Enter your name: ")
-
-        if add_or_remove == "A":
-            records.append(Booking(f"The {names.get_last_name()} Adventure", new_name, random.randint(1,5), random.randint(500,1500)))
-            print("Booking added")
-            show_records()
-            menu()
-
-        elif add_or_remove == "R":
-            if new_name in [i.get_customer_name() for i in records]:
-                for i in records:
-                    if new_name == i.get_customer_name():
-                        records.remove(i)
-                print("Booking removed")
-                show_records()
-                menu()
-            
-            else:
-                print("Customer not found, please try again")
-                choice()
-
-    elif ask == 9:
-        root = insert_data([i.total() for i in records])
-        t = int(input('Enter the key to be searched:\t'))
-
-        if Search(root,t):
-            print('"Element found in AVL Tree"')
-            menu()
-
-        else:
-            print('"Element not found in AVL Tree"')
         
-    elif ask == 10:
+    elif ask == 9:
         print("Exit")
         exit()
 
 if __name__ == "__main__":
-    os.system("clear") # may need to change this depending on the OS
+    os.system("clear")
     generate()
     menu()
     choice()

@@ -150,10 +150,11 @@ class AVL_Tree(object):
     
         # 2)modify the height      
         root.height = 1 + max(self.Height(root.left), self.Height(root.right)) 
+
         # 3)Get the Balancing Factor
         balance = self.check_Avl(root) 
+
         # 4)Balance The tree using required set of rotation
-        
         #RR Rotation as tree is Left Skewed
         if balance > 1 and val < root.left.val: 
             return self.RR(root) 
@@ -178,9 +179,11 @@ class AVL_Tree(object):
     def LL(self, node): 
         p = node.right 
         t = p.left
+
         #Rotations:
         p.left = node 
         node.right = t 
+
         #modify the heights: 
         node.height = 1 + max(self.Height(node.left), self.Height(node.right)) 
         p.height = 1 + max(self.Height(p.left), self.Height(p.right)) 
@@ -191,9 +194,11 @@ class AVL_Tree(object):
     def RR(self, node): 
         p = node.left 
         t = p.right
+
         #Rotations:
         p.right = node
         node.left = t 
+
         #modify the heights:
         node.height = 1 + max(self.Height(node.left), self.Height(node.right)) 
         p.height = 1 + max(self.Height(p.left), self.Height(p.right)) 
@@ -213,13 +218,13 @@ class AVL_Tree(object):
 
         return self.Height(root.left) - self.Height(root.right) 
 
-    def preOrder(self, root): 
-        if not root: 
-            return
+    # def preOrder(self, root): 
+    #     if not root: 
+    #         return
 
-        print("{0} ".format(root.val), end="") 
-        self.preOrder(root.left) 
-        self.preOrder(root.right) 
+    #     print("{0} ".format(root.val), end="") 
+    #     self.preOrder(root.left) 
+    #     self.preOrder(root.right) 
 
 def insert_data(_data):
     mytree = AVL_Tree()
@@ -228,8 +233,8 @@ def insert_data(_data):
     for i in _data:
         root = mytree.insert(root,i)
 
-    print("Preorder Traversal of constructed AVL tree is:")
-    mytree.preOrder(root)
+    # print("Preorder Traversal of constructed AVL tree is:")
+    # mytree.preOrder(root)
 
     return root
 
