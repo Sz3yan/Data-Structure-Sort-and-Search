@@ -59,6 +59,78 @@ def binary_search( theValues, target, new_name ):
 
     return theValues[mid]
 
+# AVL Tree
+# hight balance binary tree. 
+# AVL tree prevents it from becoming skewed. 
+# Because when a binary tree becomes skewed, it is the worst case (O (n)) for all the operations. 
+# By using the balance factor, AVL tree imposes a limit on the binary tree and thus keeps all the operations at O(log n).
+
+
+# always check from the root. if node > root, go right. if node < root, go left.
+# Balance factor = height of left subtree - height of right subtree = {-1,0,1}
+# if BF > 0 heavy on left. if BF < 0 heavy on right.
+# if balance factor is not -1,0,1, then tree is unbalanced. we need to balance it by doing rotation
+# perform 2 rotations if balance factor is -2 or 2 (LR or RL)
+# rotation only occurs on 3 nodes
+
+# for example: if we have a tree like this: 
+#       x   (take longest distance of left and right = 2 - 2 = 0)     y   (3 - 1 = 2) -> imbalance
+#     / \                                                            / \
+#    x  x  (1 - 0 = 1) ; (1 - 1 = 0)                                y  y
+#   /  /                                                             \
+#  x   x   (0 - 0 = 0) ; (0 - 0 = 0)                                 y
+#                                                                   /                                                    
+#                                                                  y
+
+
+#  initially we have:                                                               After LL Rotation:
+#      30     then insert 10, we have:   30 (2) (left of left LL imbalance)             20
+#     /                                 /                                              /  \
+#   20                                20 (1)                                         10   30
+#                                    /
+#                                  10 (0)
+
+
+#  initially we have:                                                               After LR Rotation:
+#      30     then insert 20, we have:   30 (2)     (LR imbalance)                 30               20
+#     /                                 /                                         /                /  \
+#   10                                10 (-1)                                   20        =>     10   30
+#                                       \                                      /
+#                                       20 (0)                                10
+#
+# for LR imbalance, we need to do a LR rotation => directly move C to the root then move root to right 
+
+
+#  initially we have:                                                               After RR Rotation:
+#      10     then insert 30, we have:   10 (-2)     (RR imbalance)                  20              
+#        \                                 \                                        /  \            
+#        20                                 20 (-1)                               10   30  
+#                                            \                                      
+#                                             30 (0)                                
+# 
+# 
+#  initially we have:                                                               After RL Rotation:
+#      10     then insert 20, we have:   10 (-2)     (RL imbalance)                 10               20
+#        \                                 \                                          \             /  \
+#        30                                30 (1)                                     20     =>    10   30
+#                                         /                                            \
+#                                       20 (0)                                         30
+# for RL imbalance, we need to do a RL rotation => directly move C to the root then move root to left 
+
+
+# Suppose that we have a tree like this: 
+# where l = left child. r= right child. we dk the number 
+#
+#                 A            then there's a LL insertion, making it unbalanced:
+#               /  \           to balance it, we need to do a LL rotation =>            B
+#              B    Ar                                                                /    \
+#             / |                                                                    C      A
+#            C  Br                                                                  / \     / \
+#           / \                                                                    Cl  Cr  Bl  Ar
+#          Cl  Cr
+# 
+# 
+
 class TreeNode(object): 
     def __init__(self, _val): 
         self.val = _val 
@@ -89,10 +161,12 @@ class AVL_Tree(object):
         #LL Rotation as tree is Right Skewed
         if balance < -1 and val > root.right.val: 
             return self.LL(root) 
+
         #RL Rotation as tree is Left then Right Skewed
         if balance > 1 and val > root.left.val: 
             root.left = self.LL(root.left) 
             return self.RR(root) 
+
         #LR Rotation as tree is Right then Left Skewed
         if balance < -1 and val < root.right.val: 
             root.right = self.RR(root.right) 
