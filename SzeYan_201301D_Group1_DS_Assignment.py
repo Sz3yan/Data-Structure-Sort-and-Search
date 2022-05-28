@@ -220,7 +220,8 @@ def choice():
         exit()
 
 if __name__ == "__main__":
-    os.system("clear")
+    os.system("clear") # to clear the terminal on mac os
+    os.system("cls") # to clear the terminal on windows
     generate()
     menu()
     choice()
