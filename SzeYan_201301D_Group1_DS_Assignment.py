@@ -1,12 +1,3 @@
-# Background
-# The  purpose  of  the  system  is  to  allow  a  renowned  hotel  to  manage  the  Staycation  booking  
-# records for the packages they offered. They can display and update staycation booking records 
-# from the system. User can perform searching and sorting of records. You would need to apply 
-# knowledge from the practical sessions to complete this assignment. 
-
-# bonus feature
-# |-- AVL Tree
-
 import random, names, time, os
 from tabulate import tabulate
 from SzeYan_201301D_Group1_Algorithm import bubble_sort, selection_sort, insertion_sort, linear_search, binary_search, TreeNode, AVL_Tree, insert_data, Search
@@ -57,7 +48,7 @@ def show_records():
         table_data = [x.get_package_name(), x.get_customer_name(), x.get_number_of_pax(), x.get_package_cost_per_pax(), x.total()]
         table.append(table_data)
 
-    print(tabulate(table, headers=["Package Name", "Customer Name", "Number of Pax", "Package Cost Per Pax ($)"]) + "\n")
+    print(tabulate(table, headers=["Package Name", "Customer Name", "Number of Pax", "Package Cost Per Pax ($)", "Total ($)"]) + "\n")
 
     grand_total = 0
     for i in range(len(records)):
@@ -127,9 +118,9 @@ def choice():
 
     elif ask == 5:
         print("Search record by Customer Name using Linear Search and update record" + "\n")
-        search_name = input("Enter customer name: ")
+        search_name = input("Enter customer name: ").upper()
 
-        if search_name not in [i.get_customer_name() for i in records]:
+        if search_name not in [i.get_customer_name().upper() for i in records]:
             print("Customer not found, please try again")
             choice()
 
@@ -142,9 +133,9 @@ def choice():
         print("Search record by Package Name using Binary Search and update record" + "\n")
         
         selection_sort(records)
-        search_Packagename = input("Enter Package name: ")
+        search_Packagename = input("Enter Package name: ").upper()
 
-        if search_Packagename not in [i.get_package_name() for i in records]:
+        if search_Packagename not in [i.get_package_name().upper() for i in records]:
             print("Package not found, please try again")
             choice()
 
@@ -154,10 +145,10 @@ def choice():
         menu()
 
     elif ask == 7:
-        root = insert_data([i.get_customer_name() for i in records])
-        search_name = input('Enter customer name: ')
+        root = insert_data([i.get_customer_name().upper() for i in records])
+        search_name = input('Enter customer name: ').upper()
 
-        if search_name not in [i.get_customer_name() for i in records]:
+        if search_name not in [i.get_customer_name().upper() for i in records]:
             print("Customer not found, please try again")
             choice()
 
@@ -168,7 +159,7 @@ def choice():
             insertion_sort(filered_record)
 
             for x in records:
-                if search_name == x.get_customer_name():
+                if search_name == x.get_customer_name().upper():
                     filered_record.append(x)
 
             filtered_table = []
@@ -214,7 +205,7 @@ def choice():
         except ValueError:
             print("Invalid input. Please try again")
             choice()
-        
+                
     elif ask == 9:
         print("Exit")
         exit()

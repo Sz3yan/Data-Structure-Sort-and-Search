@@ -1,3 +1,5 @@
+
+
 def bubble_sort( theSeq ):
     for x in range(len(theSeq)):
         for y in range(len(theSeq) - 1):
@@ -36,10 +38,11 @@ def insertion_sort( theSeq ):
 
 def linear_search( theSeq, value, new_name ):
     for i in range(len(theSeq)):
-        if theSeq[i].get_customer_name() == value:
+        if theSeq[i].get_customer_name().upper() == value:
             theSeq[i].set_customer_name(new_name)
 
             print(theSeq[i])
+
 
 def binary_search( theValues, target, new_name ):
     low = 0
@@ -48,16 +51,18 @@ def binary_search( theValues, target, new_name ):
     while low <= high:
         mid = int(high + low) // 2
 
-        if target == theValues[mid].get_package_name():
+        if target == theValues[mid].get_package_name().upper():
             theValues[mid].set_package_name(new_name)
 
-        elif target < theValues[mid].get_package_name():
+        elif target < theValues[mid].get_package_name().upper():
             high = mid - 1
 
         else:
             low = mid + 1
 
     return theValues[mid]
+
+# Bonus Feature
 
 # AVL Tree
 # hight balance binary tree. 
@@ -204,7 +209,6 @@ class AVL_Tree(object):
         p.height = 1 + max(self.Height(p.left), self.Height(p.right)) 
         return p 
 
-    #Getting the Height
     def Height(self, root): 
         if not root: 
             return 0
@@ -218,23 +222,12 @@ class AVL_Tree(object):
 
         return self.Height(root.left) - self.Height(root.right) 
 
-    # def preOrder(self, root): 
-    #     if not root: 
-    #         return
-
-    #     print("{0} ".format(root.val), end="") 
-    #     self.preOrder(root.left) 
-    #     self.preOrder(root.right) 
-
 def insert_data(_data):
     mytree = AVL_Tree()
     root = None
 
     for i in _data:
         root = mytree.insert(root,i)
-
-    # print("Preorder Traversal of constructed AVL tree is:")
-    # mytree.preOrder(root)
 
     return root
 
