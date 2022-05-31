@@ -41,8 +41,6 @@ def linear_search( theSeq, value, new_name ):
         if theSeq[i].get_customer_name().upper() == value:
             theSeq[i].set_customer_name(new_name)
 
-            print(theSeq[i])
-
 
 def binary_search( theValues, target, new_name ):
     low = 0
