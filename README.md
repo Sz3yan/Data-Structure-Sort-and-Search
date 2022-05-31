@@ -10,9 +10,9 @@ The  purpose  of  the  system  is  to  allow  a  renowned  hotel  to  manage  th
 
 
 # Bonus Feature 
-(more info in SzeYan_201301D_Group1_Algorithms.py)
-|-- AVL Tree 
-|-- Heap Sort
+more info in SzeYan_201301D_Group1_Algorithms.py
+- AVL Tree 
+- Heap Sort
 
 
 Done by: Sze Yan
