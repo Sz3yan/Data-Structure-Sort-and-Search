@@ -5,14 +5,14 @@ The  purpose  of  the  system  is  to  allow  a  renowned  hotel  to  manage  th
 
 
 # Run the program
-pip install -r requirements.txt
-python SzeYan_201301D_Group1_DS_Assignment.py
+    pip install -r requirements.txt
+    python SzeYan_201301D_Group1_DS_Assignment.py
 
 
 # Bonus Feature 
-    (more info in SzeYan_201301D_Group1_Algorithms.py)
-    |-- AVL Tree 
-    |-- Heap Sort
+(more info in SzeYan_201301D_Group1_Algorithms.py)
+|-- AVL Tree 
+|-- Heap Sort
 
 
-[^1]: Done by Sze Yan
+Done by: Sze Yan
