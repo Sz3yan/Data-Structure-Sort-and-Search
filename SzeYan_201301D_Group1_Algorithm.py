@@ -63,15 +63,18 @@ def binary_search( theValues, target, new_name ):
 # Bonus Feature
 
 # AVL Tree
-# hight balance binary tree. 
+# Height Balance Binary Tree. 
 # AVL tree prevents it from becoming skewed. 
 # Because when a binary tree becomes skewed, it is the worst case (O (n)) for all the operations. 
 # By using the balance factor, AVL tree imposes a limit on the binary tree and thus keeps all the operations at O(log n).
 
+# It helps it system to minise the time complexity, which enables them to manage the records better. 
+# references: https://www.geeksforgeeks.org/avl-tree-set-1-insertion/ 
+#             https://www.youtube.com/watch?v=jDM6_TnYIqE 
 
 # always check from the root. if node > root, go right. if node < root, go left.
 # Balance factor = height of left subtree - height of right subtree = {-1,0,1}
-# if BF > 0 heavy on left. if BF < 0 heavy on right.
+
 # if balance factor is not -1,0,1, then tree is unbalanced. we need to balance it by doing rotation
 # perform 2 rotations if balance factor is -2 or 2 (LR or RL)
 # rotation only occurs on 3 nodes
